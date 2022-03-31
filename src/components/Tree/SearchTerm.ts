@@ -3,7 +3,10 @@ import {ITreeNode} from "./models";
 type MatchType = "label" | "tag";
 
 function isMatch(matchType: MatchType, text: string, term: string): IMatchedOn | undefined {
-    if (text === term) {
+    const sanitisedText = text.trim().toLowerCase();
+    const sanitisedTerm = term.trim().toLowerCase();
+
+    if (sanitisedText === sanitisedTerm) {
         return {
             type: matchType,
             fullOrPartial: "full",
@@ -11,7 +14,7 @@ function isMatch(matchType: MatchType, text: string, term: string): IMatchedOn |
             value: text
         }
     }
-    if (text.includes(term)) {
+    if (sanitisedText.includes(sanitisedTerm)) {
         return {
             type: matchType,
             fullOrPartial: "partial",
@@ -28,26 +31,34 @@ export interface IMatchedOn {
     value: string;
 }
 
+function getLabelMatches(treeNode: ITreeNode, term: string | string[]): IMatchedOn[] {
+    if (typeof term === "string") {
+        const isMatchedOnLabel = isMatch("label", treeNode.label, term);
+        return isMatchedOnLabel ? [isMatchedOnLabel] : [];
+    }
+    return term.flatMap((t) => getLabelMatches(treeNode, t));
+}
+
+function getTagMatches(treeNode: ITreeNode, term: string | string[]): IMatchedOn[] {
+    if (typeof term === "string") {
+        return treeNode.tags.map((tag) => isMatch("tag", tag, term))
+            .filter((x) => x)
+            .map((x) => x!);
+    }
+    return term.flatMap((t) => getTagMatches(treeNode, t));
+}
+
 export default class SearchTerm {
 
-    constructor(private readonly term: string, private matchedOn: IMatchedOn[] = []) {
+    constructor(private readonly term: string | string[]) {
     }
 
     public matches(treeNode: ITreeNode): IMatchedOn[] {
+        const matchedOn: IMatchedOn[] = [];
 
-        const isMatchedOnLabel = isMatch("label", treeNode.label, this.term);
+        matchedOn.push(...getLabelMatches(treeNode, this.term));
+        matchedOn.push(...getTagMatches(treeNode, this.term));
 
-        if (isMatchedOnLabel) {
-            this.matchedOn.push(isMatchedOnLabel);
-        }
-
-        treeNode.tags.map((tag) => isMatch("tag", tag, this.term))
-            .forEach((isMatchedOnTag) => {
-                if (isMatchedOnTag) {
-                    this.matchedOn.push(isMatchedOnTag);
-                }
-            });
-
-        return this.matchedOn;
+        return matchedOn;
     }
 }

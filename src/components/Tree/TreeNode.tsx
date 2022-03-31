@@ -57,9 +57,9 @@ export const TreeNode = (props: IProps) => {
                          onClose={() => setOpen(false)}>
                 <div style={{fontSize: 15}}>{matchedOn ?? ""}</div>
                 {
-                    props.data.children?.map((c) => (
-                        <div>
-                            <TreeNode depth={props.depth + 1} data={c} forceExpand={props.forceExpand}/>
+                    props.data.children?.map((c, index: number) => (
+                        <div key={index}>
+                            <TreeNode key={index} depth={props.depth + 1} data={c} forceExpand={props.forceExpand}/>
                         </div>
                     ))
                 }

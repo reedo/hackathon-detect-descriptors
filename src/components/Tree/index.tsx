@@ -5,6 +5,7 @@ import SearchTerm from "./SearchTerm";
 
 interface IProps {
     data: ITreeNode[];
+    searchTerm?: string;
 }
 
 function filterTree(tree: ITreeNode[], searchTerm: string): [boolean, ITreeNode[]] {
@@ -16,7 +17,9 @@ function filterTree(tree: ITreeNode[], searchTerm: string): [boolean, ITreeNode[
     for (const node of tree) {
         const [anyChildrenMatch, updatedChildren] = filterTree(node.children ?? [], searchTerm);
 
-        const search = new SearchTerm(searchTerm);
+        const processedSearchTerm = searchTerm.includes(",") ? searchTerm.split(",") : searchTerm;
+
+        const search = new SearchTerm(processedSearchTerm);
 
         const matchedOns = search.matches(node);
 
@@ -37,7 +40,7 @@ export const Tree = (props: IProps) => {
 
     const [treeData, setTreeData] = useState<ITreeNode[]>([]);
 
-    const [searchTerm, setSearchTerm] = useState<string>();
+    const [searchTerm, setSearchTerm] = useState<string | undefined>(props.searchTerm);
 
     const [forceExpand, setForceExpand] = useState<boolean>();
 
@@ -71,8 +74,8 @@ export const Tree = (props: IProps) => {
                 <br/>
                 {
                     treeData.length > 0 ?
-                        treeData.map((d: ITreeNode) => (
-                            <TreeNode depth={0} data={d} forceExpand={forceExpand || !!searchTerm}/>)) :
+                        treeData.map((d: ITreeNode, index: number) => (
+                            <TreeNode key={index} depth={0} data={d} forceExpand={forceExpand || !!searchTerm}/>)) :
                         <div>No match!</div>
                 }
             </div>
