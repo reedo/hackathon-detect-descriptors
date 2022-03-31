@@ -46,6 +46,10 @@ export const Tree = (props: IProps) => {
     const [forceExpand, setForceExpand] = useState<boolean>();
 
     useEffect(() => {
+        setSearchTerm(props.searchTerm);
+    }, [props.searchTerm]);
+
+    useEffect(() => {
         if (!searchTerm) {
             setTreeData(props.data);
         } else {

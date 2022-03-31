@@ -1,5 +1,5 @@
 import { Card, CardContent, Grid, Typography } from '@mui/material';
-import { useState } from 'react';
+import {useMemo, useState} from 'react';
 import './App.css';
 import DoodleArea from './components/DoodleArea';
 import { Tree } from './components/Tree';
@@ -12,6 +12,10 @@ function App() {
     setMlGuesses(guesses);
   };
 
+  const searchTerms = useMemo(() => {
+    return mlGuesses.map((guess) => guess.label).join(",");
+  }, [mlGuesses]);
+
   return (
     <div className="App">
       <Grid container spacing={2}>
@@ -19,7 +23,7 @@ function App() {
           <DoodleArea onUpdate={onMlResultUpdated} />
         </Grid>
         <Grid item xs={3}>
-          <Tree data={data} />
+          <Tree data={data} searchTerm={searchTerms} />
         </Grid>
         <Grid item xs={4}>
           <Card variant="outlined">
