@@ -5,11 +5,10 @@ import { Tree } from './components/Tree';
 import { data } from './components/Tree/sampledata';
 
 function App() {
-  const [mlGuesses, setMlGuesses] = useState<ClassificationResult[]>([]);
+  const [mlGuesses, setMlGuesses] = useState([]);
 
   const onMlResultUpdated = (guesses: ClassificationResult[]) => {
-    setMlGuesses(guesses);
-    console.log(guesses);
+    // TODO
   };
 
   return (
