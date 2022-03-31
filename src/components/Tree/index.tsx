@@ -2,7 +2,8 @@ import React, {useEffect, useState} from 'react'
 import {TreeNode} from "./TreeNode";
 import {ITreeNode} from "./models";
 import SearchTerm from "./SearchTerm";
-import { TextField, Button } from '@mui/material';
+import {TextField, Button} from '@mui/material';
+import {Minus, Plus} from "react-feather";
 
 interface IProps {
     data: ITreeNode[];
@@ -62,11 +63,8 @@ export const Tree = (props: IProps) => {
     }, [props.data, searchTerm]);
 
     return (
-        <div style={{position: "fixed", zIndex: 3000}}>
+        <div style={{zIndex: 3000}}>
             <div style={{
-                position: "fixed",
-                right: 200,
-                top: 50,
                 maxWidth: 400,
                 width: 400,
                 maxHeight: 700,
@@ -83,18 +81,18 @@ export const Tree = (props: IProps) => {
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.currentTarget.value)}
                     />
-
                     {!searchTerm && (
                         <Button
                             variant="outlined"
                             onClick={() => setForceExpand((f) => !f)}
                         >
-                            {forceExpand ? 'Collapse all' : 'Expand all'}
+                            {forceExpand ? <Minus/> : <Plus/>}
                         </Button>
                     )}
                 </div>
-                <br />
-                <br />
+                <br/>
+                <br/>
+                <br/>
                 <div style={{padding: 10}}>
                     {
                         treeData.length > 0 ?

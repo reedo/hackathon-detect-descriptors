@@ -75,7 +75,5 @@ export const TreeNode = (props: IProps) => {
                 }
             </Collapsible>
         </div>
-
-
     );
 };
