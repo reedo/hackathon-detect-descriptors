@@ -3,6 +3,7 @@ import p5Types from 'p5';
 import { useState } from 'react';
 import Sketch from 'react-p5';
 import './DoodleArea.styles.css';
+// import customModel from '../../models/birds-doors-passengers.json';
 const ml5 = require('ml5');
 
 const CANVAS_WIDTH = 1200;
@@ -96,7 +97,7 @@ const DoodleArea: React.FC<DoodleAreaProps> = ({ onUpdate }) => {
   const [p5Instance, setP5Instance] = useState<any>(null);
   const [canvas, setCanvas] = useState<any>(null);
   const [classifier, _setClassifier] = useState<any>(
-    ml5.imageClassifier('DoodleNet', canvasLoaded)
+    ml5.imageClassifier('./models/model.json', canvasLoaded)
   );
 
   // --------------------------------------------------
