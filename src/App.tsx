@@ -1,6 +1,8 @@
 import './App.css';
 import DoodleArea from './components/DoodleArea/DoodleArea.component';
 import { useState } from 'react';
+import { Tree } from './components/Tree';
+import { data } from './components/Tree/sampledata';
 
 function App() {
   const [mlGuesses, setMlGuesses] = useState<ClassificationResult[]>([]);
@@ -19,6 +21,7 @@ function App() {
           Confidence: {mlGuesses.length > 0 ? mlGuesses[0].confidence : '...'}
         </p>
       </div>
+      <Tree data={data} />
     </div>
   );
 }
