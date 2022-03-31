@@ -1,14 +1,14 @@
+import { useState } from 'react';
 import './App.css';
 import DoodleArea from './components/DoodleArea/DoodleArea.component';
-import { useState } from 'react';
 import { Tree } from './components/Tree';
 import { data } from './components/Tree/sampledata';
 
 function App() {
-  const [mlGuesses, setMlGuesses] = useState([]);
+  const [mlGuesses, setMlGuesses] = useState<ClassificationResult[]>([]);
 
   const onMlResultUpdated = (guesses: ClassificationResult[]) => {
-    // TODO
+    setMlGuesses(guesses);
   };
 
   return (
