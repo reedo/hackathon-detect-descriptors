@@ -12,7 +12,7 @@ const CANVAS_PEN_WIDTH = 5;
 /** The props that can be passed into the DoodleArea component. */
 interface DoodleAreaProps {
   /** Callback to run when the image detection result is updated. */
-  onUpdate?: (guesses: ClassificationResult[]) => void;
+  onUpdate: (guesses: ClassificationResult[]) => void;
 }
 
 const DoodleArea: React.FC<DoodleAreaProps> = ({ onUpdate }) => {
@@ -20,9 +20,9 @@ const DoodleArea: React.FC<DoodleAreaProps> = ({ onUpdate }) => {
   // State
   // --------------------------------------------------
 
-  const [p5Instance, setP5Instance]: any = useState(null);
-  const [canvas, setCanvas]: any = useState(null);
-  const [classifier, setClassifier]: any = useState(
+  const [p5Instance, setP5Instance] = useState<any>(null);
+  const [canvas, setCanvas] = useState<any>(null);
+  const [classifier, _setClassifier] = useState<any>(
     ml5.imageClassifier('DoodleNet')
   );
 
@@ -35,6 +35,7 @@ const DoodleArea: React.FC<DoodleAreaProps> = ({ onUpdate }) => {
     const myCanvas = p5.createCanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
     myCanvas.parent(canvasParentRef);
     addBorderToCanvas(p5);
+    setCanvas(myCanvas);
 
     // set a reference to the instance of p5 so it can be used later
     // outside of the Sketch component.
@@ -74,7 +75,13 @@ const DoodleArea: React.FC<DoodleAreaProps> = ({ onUpdate }) => {
   };
 
   const gotResult = (error: Error, results: ClassificationResult[]) => {
-    //
+    if (error) {
+      console.error(error);
+      return;
+    }
+
+    // Pass the top 3 results into `onUpdate`.
+    onUpdate(results.slice(0, 3));
   };
 
   // --------------------------------------------------

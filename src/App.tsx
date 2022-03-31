@@ -3,10 +3,11 @@ import DoodleArea from './components/DoodleArea/DoodleArea.component';
 import { useState } from 'react';
 
 function App() {
-  const [mlGuesses, setMlGuesses] = useState([]);
+  const [mlGuesses, setMlGuesses] = useState<ClassificationResult[]>([]);
 
   const onMlResultUpdated = (guesses: ClassificationResult[]) => {
-    // TODO
+    setMlGuesses(guesses);
+    console.log(guesses);
   };
 
   return (
