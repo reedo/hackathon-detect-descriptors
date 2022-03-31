@@ -1,3 +1,4 @@
+import { Button } from '@mui/material';
 import p5Types from 'p5';
 import { useState } from 'react';
 import Sketch from 'react-p5';
@@ -103,7 +104,11 @@ const DoodleArea: React.FC<DoodleAreaProps> = ({ onUpdate }) => {
   // --------------------------------------------------
 
   const ClearButton = () => {
-    return <button onClick={clearCanvas}>Clear</button>;
+    return (
+      <Button variant="outlined" onClick={clearCanvas}>
+        Clear
+      </Button>
+    );
   };
 
   // --------------------------------------------------
