@@ -11,18 +11,27 @@ interface IProps {
 
 export const TreeNode = (props: IProps) => {
 
-    const indent = useMemo(() => "-".repeat(props.depth), [props.depth]);
-
     const [open, setOpen] = useState<boolean>(false);
 
-    const matchedOn = useMemo(() => {
-        if (!props.data.matchedOn || props.data.matchedOn.length === 0) {
-            return undefined;
+    const matchedOn = useMemo((): React.ReactElement | undefined => {
+        if (props.data.matchedOn && props.data.matchedOn.length > 0) {
+            return (
+                <ul>
+                    {
+                        props.data.matchedOn.map((mo, index: number) => {
+                            return (
+                                <li key={index}>
+                                    {mo.fullOrPartial} match on <span
+                                    style={{color: "green"}}>{mo.type}</span> '<span
+                                    style={{color: "purple"}}>{mo.matched}</span>' = '<span
+                                    style={{color: "red"}}>{mo.value}</span>'
+                                </li>
+                            );
+                        })
+                    }
+                </ul>
+            );
         }
-        const lines = props.data.matchedOn.map((mo) => `${mo.fullOrPartial} match on ${mo.type} '${mo.matched}' = '${mo.value}'`);
-
-        return `(${lines?.join(", ")})`;
-
     }, [props.data]);
 
     const hasChildren = useMemo(() => {
@@ -38,27 +47,28 @@ export const TreeNode = (props: IProps) => {
         }
     }, [hasChildren, open]);
 
+    const fontSize = useMemo(() => Math.max(5, 20 - (props.depth * 2)), [props.depth]);
+
     const label = useMemo((): React.ReactElement => {
         return (
-            <div>
-                {indent}{props.data.label}
-
+            <div style={{fontSize: fontSize}}>
+                {props.data.label}
                 {chevron()}
             </div>
         )
-    }, [indent, props.data, open, hasChildren]);
+    }, [props.data, open, hasChildren, fontSize]);
 
     return (
-        <div style={{ textAlign: "left"}}>
+        <div style={{textAlign: "left"}}>
 
             <Collapsible trigger={label}
                          open={props.forceExpand}
                          onOpen={() => setOpen(true)}
                          onClose={() => setOpen(false)}>
-                <div style={{fontSize: 15}}>{matchedOn ?? ""}</div>
+                <div style={{fontSize: fontSize}}>{matchedOn ?? ""}</div>
                 {
                     props.data.children?.map((c, index: number) => (
-                        <div key={index}>
+                        <div key={index} style={{marginLeft: props.depth * 15}}>
                             <TreeNode key={index} depth={props.depth + 1} data={c} forceExpand={props.forceExpand}/>
                         </div>
                     ))

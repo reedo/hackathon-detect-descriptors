@@ -58,8 +58,18 @@ export const Tree = (props: IProps) => {
 
     return (
         <div style={{position: "fixed", zIndex: 3000}}>
-            <div style={{position: "fixed", right: 200, top: 100, maxWidth: 300, width: 300, overflow: "hidden"}}>
-                <div style={{float: "left", overflow: "auto"}}>
+            <div style={{
+                position: "fixed",
+                right: 200,
+                top: 50,
+                maxWidth: 400,
+                width: 400,
+                maxHeight: 700,
+                overflow: "scroll",
+                borderStyle: "solid",
+                borderWidth: "thin",
+            }}>
+                <div style={{float: "left", overflow: "auto", padding: 10}}>
                     <input width={100} type="text" className="form-control" value={searchTerm}
                            onChange={e => setSearchTerm(e.currentTarget.value)}/>
 
@@ -72,12 +82,14 @@ export const Tree = (props: IProps) => {
                 </div>
                 <br/>
                 <br/>
-                {
-                    treeData.length > 0 ?
-                        treeData.map((d: ITreeNode, index: number) => (
-                            <TreeNode key={index} depth={0} data={d} forceExpand={forceExpand || !!searchTerm}/>)) :
-                        <div>No match!</div>
-                }
+                <div style={{padding: 10}}>
+                    {
+                        treeData.length > 0 ?
+                            treeData.map((d: ITreeNode, index: number) => (
+                                <TreeNode key={index} depth={1} data={d} forceExpand={forceExpand || !!searchTerm}/>)) :
+                            <div>No match!</div>
+                    }
+                </div>
             </div>
         </div>
     );
