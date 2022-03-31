@@ -1,9 +1,9 @@
+import { Card, CardContent, Grid, Typography } from '@mui/material';
 import { useState } from 'react';
 import './App.css';
 import DoodleArea from './components/DoodleArea';
 import { Tree } from './components/Tree';
 import { data } from './components/Tree/sampledata';
-import { Grid } from '@mui/material';
 
 function App() {
   const [mlGuesses, setMlGuesses] = useState<ClassificationResult[]>([]);
@@ -22,12 +22,20 @@ function App() {
           <Tree data={data} />
         </Grid>
         <Grid item xs={6}>
+          <Card variant="outlined">
+            <CardContent>
+              <Typography variant="h5" component="div">
+                Guess: {mlGuesses.length > 0 ? mlGuesses[0].label : '...'}
+              </Typography>
+              <Typography variant="h5" component="div">
+                Confidence:{' '}
+                {mlGuesses.length > 0 ? mlGuesses[0].confidence : '...'}
+              </Typography>
+            </CardContent>
+          </Card>
           <div className="guess-info">
-            <p>Guess: {mlGuesses.length > 0 ? mlGuesses[0].label : '...'}</p>
-            <p>
-              Confidence:{' '}
-              {mlGuesses.length > 0 ? mlGuesses[0].confidence : '...'}
-            </p>
+            <p></p>
+            <p></p>
           </div>
         </Grid>
       </Grid>
