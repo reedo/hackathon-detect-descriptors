@@ -15,13 +15,13 @@ function App() {
   return (
     <div className="App">
       <Grid container spacing={2}>
-        <Grid item xs={6}>
+        <Grid item xs={9}>
           <DoodleArea onUpdate={onMlResultUpdated} />
         </Grid>
-        <Grid item xs={4}>
+        <Grid item xs={3}>
           <Tree data={data} />
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={4}>
           <Card variant="outlined">
             <CardContent>
               <Typography variant="h5" component="div">
