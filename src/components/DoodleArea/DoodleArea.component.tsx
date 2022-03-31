@@ -2,23 +2,38 @@ import p5Types from 'p5';
 import { useState } from 'react';
 import Sketch from 'react-p5';
 import './DoodleArea.styles.css';
+const ml5 = require('ml5');
 
 const CANVAS_WIDTH = 500;
 const CANVAS_HEIGHT = 500;
 const CANVAS_BG_COLOR = 255;
 const CANVAS_PEN_WIDTH = 5;
 
-interface DoodleAreaProps {}
+/** The props that can be passed into the DoodleArea component. */
+interface DoodleAreaProps {
+  /** Callback to run when the image detection result is updated. */
+  onUpdate?: (guesses: ClassificationResult[]) => void;
+}
 
-const DoodleArea: React.FC<DoodleAreaProps> = () => {
+const DoodleArea: React.FC<DoodleAreaProps> = ({ onUpdate }) => {
+  // --------------------------------------------------
+  // State
+  // --------------------------------------------------
+
   const [p5Instance, setP5Instance]: any = useState(null);
+  const [canvas, setCanvas]: any = useState(null);
+  const [classifier, setClassifier]: any = useState(
+    ml5.imageClassifier('DoodleNet')
+  );
 
   // --------------------------------------------------
   // Canvas callbacks
   // --------------------------------------------------
 
   const setupCanvas = (p5: p5Types, canvasParentRef: Element) => {
-    p5.createCanvas(CANVAS_WIDTH, CANVAS_HEIGHT).parent(canvasParentRef);
+    // Create and configure the canvas.
+    const myCanvas = p5.createCanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
+    myCanvas.parent(canvasParentRef);
     addBorderToCanvas(p5);
 
     // set a reference to the instance of p5 so it can be used later
@@ -48,6 +63,21 @@ const DoodleArea: React.FC<DoodleAreaProps> = () => {
   };
 
   // --------------------------------------------------
+  // ML callbacks
+  // --------------------------------------------------
+
+  /**
+   * Takes the top 3 results and passes them into the `onUpdate` callback.
+   */
+  const classifyCanvas = () => {
+    classifier.classify(canvas, gotResult);
+  };
+
+  const gotResult = (error: Error, results: ClassificationResult[]) => {
+    //
+  };
+
+  // --------------------------------------------------
   // Components
   // --------------------------------------------------
 
@@ -65,7 +95,7 @@ const DoodleArea: React.FC<DoodleAreaProps> = () => {
         <Sketch
           setup={setupCanvas}
           draw={drawOnCanvas}
-          // style={{ borderStyle: 'solid' }}
+          mouseReleased={classifyCanvas}
         />
       </div>
       <div className="doodle-info">
