@@ -17,18 +17,12 @@ interface DoodleAreaProps {
 
 const DoodleArea: React.FC<DoodleAreaProps> = ({ onUpdate }) => {
   // --------------------------------------------------
-  // State
-  // --------------------------------------------------
-
-  const [p5Instance, setP5Instance] = useState<any>(null);
-  const [canvas, setCanvas] = useState<any>(null);
-  const [classifier, _setClassifier] = useState<any>(
-    ml5.imageClassifier('DoodleNet')
-  );
-
-  // --------------------------------------------------
   // Canvas callbacks
   // --------------------------------------------------
+
+  const canvasLoaded = () => {
+    setIsLoading(false);
+  };
 
   const setupCanvas = (p5: p5Types, canvasParentRef: Element) => {
     // Create and configure the canvas.
@@ -71,7 +65,9 @@ const DoodleArea: React.FC<DoodleAreaProps> = ({ onUpdate }) => {
    * Takes the top 3 results and passes them into the `onUpdate` callback.
    */
   const classifyCanvas = () => {
-    classifier.classify(canvas, gotResult);
+    if (!isLoading) {
+      classifier.classify(canvas, 3, gotResult);
+    }
   };
 
   const gotResult = (error: Error, results: ClassificationResult[]) => {
@@ -80,9 +76,27 @@ const DoodleArea: React.FC<DoodleAreaProps> = ({ onUpdate }) => {
       return;
     }
 
+    const guesses = results.map((guess) => {
+      return {
+        label: guess.label,
+        confidence: p5Instance.nf(guess.confidence, 0, 2),
+      };
+    });
+
     // Pass the top 3 results into `onUpdate`.
-    onUpdate(results.slice(0, 3));
+    onUpdate(guesses);
   };
+
+  // --------------------------------------------------
+  // State
+  // --------------------------------------------------
+
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [p5Instance, setP5Instance] = useState<any>(null);
+  const [canvas, setCanvas] = useState<any>(null);
+  const [classifier, _setClassifier] = useState<any>(
+    ml5.imageClassifier('DoodleNet', canvasLoaded)
+  );
 
   // --------------------------------------------------
   // Components
@@ -98,16 +112,22 @@ const DoodleArea: React.FC<DoodleAreaProps> = ({ onUpdate }) => {
 
   return (
     <div className="doodle-area">
-      <div className="canvas">
-        <Sketch
-          setup={setupCanvas}
-          draw={drawOnCanvas}
-          mouseReleased={classifyCanvas}
-        />
-      </div>
-      <div className="doodle-info">
-        <ClearButton />
-      </div>
+      {isLoading ? (
+        <div className="loading">LOADING</div>
+      ) : (
+        <>
+          <div className="canvas">
+            <Sketch
+              setup={setupCanvas}
+              draw={drawOnCanvas}
+              mouseReleased={classifyCanvas}
+            />
+          </div>
+          <div className="doodle-info">
+            <ClearButton />
+          </div>
+        </>
+      )}
     </div>
   );
 };

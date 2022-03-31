@@ -13,6 +13,12 @@ function App() {
   return (
     <div className="App">
       <DoodleArea onUpdate={onMlResultUpdated} />
+      <div className="guess-info">
+        <p>Guess: {mlGuesses.length > 0 ? mlGuesses[0].label : '...'}</p>
+        <p>
+          Confidence: {mlGuesses.length > 0 ? mlGuesses[0].confidence : '...'}
+        </p>
+      </div>
     </div>
   );
 }
