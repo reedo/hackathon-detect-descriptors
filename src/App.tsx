@@ -1,6 +1,7 @@
+import { Card, CardContent, Grid, Typography } from '@mui/material';
 import { useState } from 'react';
 import './App.css';
-import DoodleArea from './components/DoodleArea/DoodleArea.component';
+import DoodleArea from './components/DoodleArea';
 import { Tree } from './components/Tree';
 import { data } from './components/Tree/sampledata';
 
@@ -13,14 +14,31 @@ function App() {
 
   return (
     <div className="App">
-      <DoodleArea onUpdate={onMlResultUpdated} />
-      <div className="guess-info">
-        <p>Guess: {mlGuesses.length > 0 ? mlGuesses[0].label : '...'}</p>
-        <p>
-          Confidence: {mlGuesses.length > 0 ? mlGuesses[0].confidence : '...'}
-        </p>
-      </div>
-      <Tree data={data} />
+      <Grid container spacing={2}>
+        <Grid item xs={6}>
+          <DoodleArea onUpdate={onMlResultUpdated} />
+        </Grid>
+        <Grid item xs={4}>
+          <Tree data={data} />
+        </Grid>
+        <Grid item xs={6}>
+          <Card variant="outlined">
+            <CardContent>
+              <Typography variant="h5" component="div">
+                Guess: {mlGuesses.length > 0 ? mlGuesses[0].label : '...'}
+              </Typography>
+              <Typography variant="h5" component="div">
+                Confidence:{' '}
+                {mlGuesses.length > 0 ? mlGuesses[0].confidence : '...'}
+              </Typography>
+            </CardContent>
+          </Card>
+          <div className="guess-info">
+            <p></p>
+            <p></p>
+          </div>
+        </Grid>
+      </Grid>
     </div>
   );
 }

@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react'
 import {TreeNode} from "./TreeNode";
 import {ITreeNode} from "./models";
 import SearchTerm from "./SearchTerm";
+import { TextField, Button } from '@mui/material';
 
 interface IProps {
     data: ITreeNode[];
@@ -70,18 +71,26 @@ export const Tree = (props: IProps) => {
                 borderWidth: "thin",
             }}>
                 <div style={{float: "left", overflow: "auto", padding: 10}}>
-                    <input width={100} type="text" className="form-control" value={searchTerm}
-                           onChange={e => setSearchTerm(e.currentTarget.value)}/>
+                    <TextField
+                        id="standard-basic"
+                        variant="standard"
+                        placeholder="Search..."
+                        // fullWidth
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.currentTarget.value)}
+                    />
 
-                    {!searchTerm && <button onClick={() => setForceExpand(f => !f)}>
-                        {
-                            forceExpand ? "Collapse all" : "Expand all"
-                        }
-
-                    </button>}
+                    {!searchTerm && (
+                        <Button
+                            variant="outlined"
+                            onClick={() => setForceExpand((f) => !f)}
+                        >
+                            {forceExpand ? 'Collapse all' : 'Expand all'}
+                        </Button>
+                    )}
                 </div>
-                <br/>
-                <br/>
+                <br />
+                <br />
                 <div style={{padding: 10}}>
                     {
                         treeData.length > 0 ?
