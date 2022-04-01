@@ -2,8 +2,8 @@ import React, {useEffect, useState} from 'react'
 import {TreeNode} from "./TreeNode";
 import {ITreeNode} from "./models";
 import SearchTerm from "./SearchTerm";
-import {TextField, Button} from '@mui/material';
-import {Minus, Plus} from "react-feather";
+import {Button, TextField} from '@mui/material';
+import {Minus, Plus, ToggleLeft, ToggleRight} from "react-feather";
 
 interface IProps {
     data: ITreeNode[];
@@ -46,6 +46,8 @@ export const Tree = (props: IProps) => {
 
     const [forceExpand, setForceExpand] = useState<boolean>();
 
+    const [showDetails, setShowDetails] = useState<boolean>(false);
+
     useEffect(() => {
         setSearchTerm(props.searchTerm);
     }, [props.searchTerm]);
@@ -53,6 +55,7 @@ export const Tree = (props: IProps) => {
     useEffect(() => {
         if (!searchTerm) {
             setTreeData(props.data);
+            setShowDetails(false);
         } else {
             const [match, data] = filterTree(props.data, searchTerm);
             if (!match) {
@@ -61,6 +64,10 @@ export const Tree = (props: IProps) => {
             setTreeData(data);
         }
     }, [props.data, searchTerm]);
+
+    const toggleShowDetails = () => {
+        setShowDetails((d) => !d);
+    };
 
     return (
         <div style={{zIndex: 3000}}>
@@ -93,12 +100,24 @@ export const Tree = (props: IProps) => {
                 <br/>
                 <br/>
                 <br/>
+                {searchTerm && treeData.length > 0 && (
+                    <div style={{textAlign: "left", fontSize: "smaller", verticalAlign: "middle"}}>
+                        {showDetails ? <ToggleRight onClick={toggleShowDetails}/> :
+                            <ToggleLeft onClick={toggleShowDetails}/>}
+                        <div style={{ position: "relative", bottom: 20, left: 30}}>
+                            Show matches
+                        </div>
+                    </div>
+                )}
                 <div style={{padding: 10}}>
                     {
                         treeData.length > 0 ?
                             treeData.map((d: ITreeNode, index: number) => (
-                                <TreeNode key={index} depth={1} data={d} forceExpand={forceExpand || !!searchTerm}/>)) :
-                            <div>No match!</div>
+                                <TreeNode key={index}
+                                          depth={1} data={d}
+                                          forceExpand={forceExpand || !!searchTerm}
+                                          showDetails={showDetails}
+                                />)) : <div>No match!</div>
                     }
                 </div>
             </div>

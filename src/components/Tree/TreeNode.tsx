@@ -7,6 +7,7 @@ interface IProps {
     data: ITreeNode;
     depth: number;
     forceExpand: boolean;
+    showDetails: boolean;
 }
 
 export const TreeNode = (props: IProps) => {
@@ -65,11 +66,16 @@ export const TreeNode = (props: IProps) => {
                          open={props.forceExpand}
                          onOpen={() => setOpen(true)}
                          onClose={() => setOpen(false)}>
-                <div style={{fontSize: fontSize}}>{matchedOn ?? ""}</div>
+                {props.showDetails && <div style={{fontSize: fontSize}}>{matchedOn ?? ""}</div>}
                 {
                     props.data.children?.map((c, index: number) => (
                         <div key={index} style={{marginLeft: props.depth * 15}}>
-                            <TreeNode key={index} depth={props.depth + 1} data={c} forceExpand={props.forceExpand}/>
+                            <TreeNode key={index}
+                                      depth={props.depth + 1}
+                                      data={c}
+                                      forceExpand={props.forceExpand}
+                                      showDetails={props.showDetails}
+                            />
                         </div>
                     ))
                 }

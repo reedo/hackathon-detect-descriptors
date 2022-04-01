@@ -1,5 +1,5 @@
 import {Card, CardContent, Grid, Typography} from '@mui/material';
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import './App.css';
 import DoodleArea from './components/DoodleArea';
 import NavBar from './components/NavBar';
@@ -16,7 +16,11 @@ function App() {
   };
 
   useEffect(() => {
-    setSearchTerm(mlGuesses.map((guess) => guess.label).join(","));
+    if (mlGuesses && mlGuesses.length > 0) {
+      setSearchTerm(mlGuesses[0].label);
+    } else {
+      setSearchTerm(undefined);
+    }
   }, [mlGuesses]);
 
   return (
