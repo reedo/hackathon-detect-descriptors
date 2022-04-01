@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/hackathon-detect-descriptors/static/css/main.bff9012f.css",
+    "main.js": "/hackathon-detect-descriptors/static/js/main.f32cf9b2.js",
+    "index.html": "/hackathon-detect-descriptors/index.html",
+    "main.bff9012f.css.map": "/hackathon-detect-descriptors/static/css/main.bff9012f.css.map",
+    "main.f32cf9b2.js.map": "/hackathon-detect-descriptors/static/js/main.f32cf9b2.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.bff9012f.css",
+    "static/js/main.f32cf9b2.js"
+  ]
+}
