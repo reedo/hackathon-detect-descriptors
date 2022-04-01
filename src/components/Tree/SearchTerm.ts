@@ -14,14 +14,14 @@ function isMatch(matchType: MatchType, text: string, term: string): IMatchedOn |
             value: text
         }
     }
-    if (sanitisedText.includes(sanitisedTerm)) {
+/*    if (sanitisedText.includes(sanitisedTerm)) {
         return {
             type: matchType,
             fullOrPartial: "partial",
             matched: text,
             value: term
         }
-    }
+    }*/
 }
 
 export interface IMatchedOn {
