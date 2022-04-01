@@ -7,7 +7,7 @@ import './DoodleArea.styles.css';
 const ml5 = require('ml5');
 
 const CANVAS_WIDTH = 1200;
-const CANVAS_HEIGHT = 700;
+const CANVAS_HEIGHT = 650;
 const CANVAS_BG_COLOR = 255;
 const CANVAS_PEN_WIDTH = 5;
 
