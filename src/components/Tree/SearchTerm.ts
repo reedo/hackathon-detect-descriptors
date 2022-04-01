@@ -14,14 +14,16 @@ function isMatch(matchType: MatchType, text: string, term: string): IMatchedOn |
             value: text
         }
     }
-/*    if (sanitisedText.includes(sanitisedTerm)) {
-        return {
-            type: matchType,
-            fullOrPartial: "partial",
-            matched: text,
-            value: term
+    if (sanitisedText.includes(" ")) {
+        const partials: IMatchedOn[] = sanitisedText.split(" ")
+            .map((t) => isMatch(matchType, t, term))
+            .filter((x) => x)
+            .map((x) => x!);
+
+        if (partials.length > 0) {
+            return {...partials[0], fullOrPartial: "partial"};
         }
-    }*/
+    }
 }
 
 export interface IMatchedOn {
