@@ -1,11 +1,11 @@
-import * as React from 'react';
-import { alpha, styled } from '@mui/material/styles';
+import SearchIcon from '@mui/icons-material/Search';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
+import InputBase from '@mui/material/InputBase';
+import { alpha, styled } from '@mui/material/styles';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import InputBase from '@mui/material/InputBase';
-import SearchIcon from '@mui/icons-material/Search';
+import * as React from 'react';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -65,7 +65,7 @@ export default function SearchAppBar(props: IProps) {
             component="div"
             sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
           >
-            DescripDRAW
+            descripDRAW
           </Typography>
           <Search>
             <SearchIconWrapper>
