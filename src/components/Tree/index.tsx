@@ -42,28 +42,22 @@ export const Tree = (props: IProps) => {
 
     const [treeData, setTreeData] = useState<ITreeNode[]>([]);
 
-    const [searchTerm, setSearchTerm] = useState<string | undefined>(props.searchTerm);
-
     const [forceExpand, setForceExpand] = useState<boolean>();
 
     const [showDetails, setShowDetails] = useState<boolean>(false);
 
     useEffect(() => {
-        setSearchTerm(props.searchTerm);
-    }, [props.searchTerm]);
-
-    useEffect(() => {
-        if (!searchTerm) {
+        if (!props.searchTerm) {
             setTreeData(props.data);
             setShowDetails(false);
         } else {
-            const [match, data] = filterTree(props.data, searchTerm);
+            const [match, data] = filterTree(props.data, props.searchTerm);
             if (!match) {
                 console.log("Nothing matched!!");
             }
             setTreeData(data);
         }
-    }, [props.data, searchTerm]);
+    }, [props.data, props.searchTerm]);
 
     const toggleShowDetails = () => {
         setShowDetails((d) => !d);
@@ -73,38 +67,27 @@ export const Tree = (props: IProps) => {
         <div style={{zIndex: 3000}}>
             <div style={{
                 maxWidth: 400,
-                width: 400,
                 maxHeight: 700,
                 overflow: "scroll",
                 borderStyle: "solid",
                 borderWidth: "thin",
             }}>
                 <div style={{float: "left", overflow: "auto", padding: 10}}>
-                    <TextField
-                        id="standard-basic"
-                        variant="standard"
-                        placeholder="Search..."
-                        // fullWidth
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.currentTarget.value)}
-                    />
-                    {!searchTerm && (
                         <Button
                             variant="outlined"
                             onClick={() => setForceExpand((f) => !f)}
                         >
                             {forceExpand ? <Minus/> : <Plus/>}
                         </Button>
-                    )}
                 </div>
                 <br/>
                 <br/>
                 <br/>
-                {searchTerm && treeData.length > 0 && (
+                {props.searchTerm && treeData.length > 0 && (
                     <div style={{textAlign: "left", fontSize: "smaller", verticalAlign: "middle"}}>
                         {showDetails ? <ToggleRight onClick={toggleShowDetails}/> :
                             <ToggleLeft onClick={toggleShowDetails}/>}
-                        <div style={{ position: "relative", bottom: 20, left: 30}}>
+                        <div style={{position: "relative", bottom: 20, left: 30}}>
                             Show matches
                         </div>
                     </div>
@@ -115,7 +98,7 @@ export const Tree = (props: IProps) => {
                             treeData.map((d: ITreeNode, index: number) => (
                                 <TreeNode key={index}
                                           depth={1} data={d}
-                                          forceExpand={forceExpand || !!searchTerm}
+                                          forceExpand={forceExpand || !!props.searchTerm}
                                           showDetails={showDetails}
                                 />)) : <div>No match!</div>
                     }
