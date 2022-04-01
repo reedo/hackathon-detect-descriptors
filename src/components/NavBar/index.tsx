@@ -11,93 +11,93 @@ import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 
 const Search = styled('div')(({ theme }) => ({
-    position: 'relative',
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: alpha(theme.palette.common.white, 0.15),
-    '&:hover': {
-        backgroundColor: alpha(theme.palette.common.white, 0.25),
-    },
-    marginLeft: 0,
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
-        marginLeft: theme.spacing(1),
-        width: 'auto',
-    },
+  position: 'relative',
+  borderRadius: theme.shape.borderRadius,
+  backgroundColor: alpha(theme.palette.common.white, 0.15),
+  '&:hover': {
+    backgroundColor: alpha(theme.palette.common.white, 0.25),
+  },
+  marginLeft: 0,
+  width: '100%',
+  [theme.breakpoints.up('sm')]: {
+    marginLeft: theme.spacing(1),
+    width: 'auto',
+  },
 }));
 
 const SearchIconWrapper = styled('div')(({ theme }) => ({
-    padding: theme.spacing(0, 2),
-    height: '100%',
-    position: 'absolute',
-    pointerEvents: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
+  padding: theme.spacing(0, 2),
+  height: '100%',
+  position: 'absolute',
+  pointerEvents: 'none',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
 }));
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
-    color: 'inherit',
-    '& .MuiInputBase-input': {
-        padding: theme.spacing(1, 1, 1, 0),
-        // vertical padding + font size from searchIcon
-        paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-        transition: theme.transitions.create('width'),
-        width: '100%',
-        [theme.breakpoints.up('sm')]: {
-            width: '12ch',
-            '&:focus': {
-                width: '20ch',
-            },
-        },
+  color: 'inherit',
+  '& .MuiInputBase-input': {
+    padding: theme.spacing(1, 1, 1, 0),
+    // vertical padding + font size from searchIcon
+    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+    transition: theme.transitions.create('width'),
+    width: '100%',
+    [theme.breakpoints.up('sm')]: {
+      width: '12ch',
+      '&:focus': {
+        width: '20ch',
+      },
     },
+  },
 }));
 
 interface IProps {
-    searchTerm?: string;
-    setSearchTerm: (term: string) => void;
+  searchTerm?: string;
+  setSearchTerm: (term: string) => void;
 
-    searchOverride: boolean;
-    setSearchOverride: (value: (((prevState: boolean) => boolean) | boolean)) => void;
+  searchOverride: boolean;
+  setSearchOverride: (value: (((prevState: boolean) => boolean) | boolean)) => void;
 }
 
 export default function SearchAppBar(props: IProps) {
-    return (
-        <Box sx={{ flexGrow: 1 }}>
-            <AppBar position="static" style={{ background: 'rgb(8, 79, 123)' }}>
-                <Toolbar>
-                    <Typography
-                        variant="h6"
-                        noWrap
-                        component="div"
-                        sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
-                    >
-                        DescripDRAW
-                    </Typography>
-                    <div>
-                        Manual mode
-                        <ToggleButton
-                            value="check"
-                            selected={props.searchOverride}
-                            onChange={() => {
-                                props.setSearchOverride((so) => !so)
-                            }}
-                        >
-                            {props.searchOverride ? <CheckBoxIcon/> : <CheckBoxOutlineBlankIcon/>}
-                        </ToggleButton>
-                    </div>
-                    <Search>
-                        <SearchIconWrapper>
-                            <SearchIcon />
-                        </SearchIconWrapper>
-                        <StyledInputBase
-                            placeholder="Search…"
-                            inputProps={{ 'aria-label': 'search' }}
-                            value={props.searchTerm}
-                            onChange={(x) => props.setSearchTerm(x.currentTarget.value)}
-                        />
-                    </Search>
-                </Toolbar>
-            </AppBar>
-        </Box>
-    );
+  return (
+      <Box sx={{ flexGrow: 1 }}>
+        <AppBar position="static" style={{ background: 'rgb(8, 79, 123)' }}>
+          <Toolbar>
+            <Typography
+                variant="h6"
+                noWrap
+                component="div"
+                sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
+            >
+              descripDRAW
+            </Typography>
+            <div>
+              Manual mode
+              <ToggleButton
+                  value="check"
+                  selected={props.searchOverride}
+                  onChange={() => {
+                    props.setSearchOverride((so) => !so)
+                  }}
+              >
+                {props.searchOverride ? <CheckBoxIcon/> : <CheckBoxOutlineBlankIcon/>}
+              </ToggleButton>
+            </div>
+            <Search>
+              <SearchIconWrapper>
+                <SearchIcon />
+              </SearchIconWrapper>
+              <StyledInputBase
+                  placeholder="Search…"
+                  inputProps={{ 'aria-label': 'search' }}
+                  value={props.searchTerm}
+                  onChange={(x) => props.setSearchTerm(x.currentTarget.value)}
+              />
+            </Search>
+          </Toolbar>
+        </AppBar>
+      </Box>
+  );
 }
