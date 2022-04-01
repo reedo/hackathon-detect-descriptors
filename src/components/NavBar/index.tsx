@@ -65,7 +65,7 @@ export default function SearchAppBar(props: IProps) {
             component="div"
             sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
           >
-            Event Descrip-draw
+            DescripDRAW
           </Typography>
           <Search>
             <SearchIconWrapper>
